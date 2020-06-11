@@ -1,0 +1,61 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&display=swap');
+
+.container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-container {
+  flex: 2;
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+.grow {
+  flex:2;
+}
+
+.loginBox {
+  width: 300px;
+  max-width: 80%;
+  position: absolute;
+  top: 50%;
+  border: solid 1px #ccc;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+// .icon-fb {
+//   color: #3b5998;
+//   margin-right: 10px;
+// }
+
+.icon-gg {
+  background-image: url("https://img.icons8.com/color/48/000000/google-logo.png");
+  width: 20px;
+  height: 20px;
+  background-size: contain;
+  margin-right: 10px;
+}
+
+.btn-social {
+  width: 240px;
+
+  &+.btn-social {
+    margin-top: 10px;
+  }
+}
+
+.nav-item {
+  cursor: pointer;
+  color: #333;
+  a {
+    text-decoration: none;
+    display: block;
+    color: #333;
+  }
+}
