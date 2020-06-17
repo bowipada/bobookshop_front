@@ -19,12 +19,23 @@ import {
       })
     }
   };
+
+  export const saveBookCategories = (categories, bookId) => {
+    return dispatch => {
+      return api.saveBookCategories({bookId, categories}).then((res) => {
+        if (res.status === 200) {
+          dispatch(fetchBooks());
+        }
+      });
+    }
+  };
   
   export const createBook = (payload) => {
     return dispatch => {
       return api.createBook(payload).then((res) => {
         if (res.status === 200) {
           dispatch(fetchBooks());
+          return res.data;
         }
       })
     }

@@ -105,6 +105,30 @@ class API {
     return this.delete("books/" + id);
   }
 
+  // categor
+  createCategory(data) {
+    return this.post("categories", data);
+  }
+
+  updateCategory(data) {
+    return this.put("categories", data);
+  }
+
+  deleteCategory(id) {
+    return this.delete("categories/" + id);
+  }
+
+  getCategory(param = null) {
+    let order = "";
+    if (param) {
+      order = `?order=${param}`
+    }
+    return this.get("categories" + order);
+  }
+
+  saveBookCategories(param) {
+    return this.post("book-categories", param);
+  }
 }
 
 export default API;

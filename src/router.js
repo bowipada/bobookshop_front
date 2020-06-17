@@ -4,6 +4,7 @@ import Publisher from "./view/publisher";
 import Discount from "./view/discount";
 import Book from "./view/book";
 import Shop from "./view/shop"
+import Category from "./view/category";
 
 export const routes = [
   {
@@ -26,6 +27,10 @@ export const routes = [
   {
     path: "/book",
     component: Book
+  },
+  {
+    path: "/category",
+    component: Category
   },
   {
     path: "/shop",
