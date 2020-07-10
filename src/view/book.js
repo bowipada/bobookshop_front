@@ -104,6 +104,7 @@ class Book extends React.Component {
           if (cate) {
             return cate.categoryName;
           }
+          return "";
         });
         return arr.join(", ");
       }
@@ -320,7 +321,10 @@ class Book extends React.Component {
   }
 
   onEdit(item, index) {
-    let categories = item.bookCategories.map(e => e.categoryId);
+    let categories = [];
+    if (item.bookCategories) {
+      categories = item.bookCategories.map(e => e.categoryId);
+    }
     this.setState({
       item: { ...item, categories },
       editIndex: index,

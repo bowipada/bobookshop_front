@@ -6,6 +6,12 @@
   flex-direction: column;
 }
 
+.content {
+  width: 1200px;
+  max-width: 98%;
+  margin: auto;
+}
+
 .main-container {
   flex: 2;
 }

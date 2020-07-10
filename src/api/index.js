@@ -93,6 +93,10 @@ class API {
     return this.get(path);
   }
 
+  getBookById(id) {
+    return this.get("books/" + id);
+  }
+
   createBook(data) {
     return this.post("books", data);
   }
@@ -105,7 +109,7 @@ class API {
     return this.delete("books/" + id);
   }
 
-  // categor
+  // category
   createCategory(data) {
     return this.post("categories", data);
   }
@@ -128,6 +132,24 @@ class API {
 
   saveBookCategories(param) {
     return this.post("book-categories", param);
+  }
+
+  getCategoriesBooks(param = null) {
+    let q = "";
+    let arrQ = [];
+    if (param) {
+      if (param.limit) {
+        arrQ.push(`limit=${param.limit}`);
+      }
+      if (param.categoryid) {
+        arrQ.push(`categoryid=${param.categoryid}`);
+      }
+      if(arrQ.length > 0) {
+        q = "?" + arrQ.join("&");
+      }
+    }
+    
+    return this.get(`book-categories${q}`);
   }
 }
 

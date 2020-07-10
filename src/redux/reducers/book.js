@@ -2,11 +2,13 @@ import {
     SET_BOOKS,
     ADD_BOOK,
     UPDATE_BOOK,
-    DELETE_BOOK
+    DELETE_BOOK,
+    SET_CATEGORIES_BOOKS
   } from "../actionTypes";
   
   const initialState = {
-    items: []
+    items: [],
+    categories: []
   };
   
   export default function (state = initialState, action) {
@@ -28,6 +30,9 @@ import {
         const items =  state.items.slice();
         items.splice(action.index, 1);
         return { ...state, items };
+      }
+      case SET_CATEGORIES_BOOKS: {
+        return { ...state, categories: action.categories };
       }
       default: {
         return state;

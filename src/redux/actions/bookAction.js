@@ -2,7 +2,8 @@ import {
     SET_BOOKS,
     ADD_BOOK,
     UPDATE_BOOK,
-    DELETE_BOOK
+    DELETE_BOOK,
+    SET_CATEGORIES_BOOKS
   } from "../actionTypes";
   import Api from "../../api";
   
@@ -61,7 +62,18 @@ import {
     }
   };
   
-  
+  export const fetchCategoriesBooks = (param = null) => {
+    return dispatch => {
+      return api.getCategoriesBooks(param).then((res) => {
+        if (res.data) {
+          dispatch(setCategoriesBooks(res.data));
+        } else {
+          dispatch(setCategoriesBooks([]));
+        }
+      });
+    }
+  };
+
   export const setBooks = payload => ({
     type: SET_BOOKS,
     payload
@@ -71,7 +83,6 @@ import {
     type: ADD_BOOK,
     payload
   });
-  
 
   export const updateItemBook = (payload) => ({
     type: UPDATE_BOOK,
@@ -82,3 +93,8 @@ import {
     type: DELETE_BOOK,
     index
   });
+
+  export const setCategoriesBooks = (categories) => ({
+    type: SET_CATEGORIES_BOOKS,
+    categories
+  })

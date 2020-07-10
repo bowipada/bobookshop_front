@@ -3,7 +3,7 @@ import Login from "./view/login";
 import Publisher from "./view/publisher";
 import Discount from "./view/discount";
 import Book from "./view/book";
-import Shop from "./view/shop"
+import Shop from "./view/shop/shop"
 import Category from "./view/category";
 
 export const routes = [

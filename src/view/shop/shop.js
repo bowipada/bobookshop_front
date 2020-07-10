@@ -1,10 +1,16 @@
 import React from 'react';
-import { connect } from "react-redux";
-import { fetchPublishers } from "../redux/actions/publisherAction";
-import { fetchBooks } from "../redux/actions/bookAction";
 
-import imgbookHeader from '../assets/images/bookstack.png';
-// import imgBook from '../assets/images/book.png'
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route
+} from "react-router-dom";
+
+import ShopHome from "./shopHome";
+import Books from "./books";
+import BookDetail from "./bookDetail";
+
+import imgbookHeader from '../../assets/images/bookstack.png';
 
 const headerStyle = {
   fontWeight: "bold",
@@ -25,30 +31,25 @@ const imgbookHeaderStyle = {
   marginRight: "15px",
   backgroundImage: `url(${imgbookHeader})`,
   backgroundSize: "contain"
+};
 
-}
+
 class Shop extends React.Component {
-
-  componentDidMount() {
-    // this.props.dispatch(fetchBooks());
-    // this.props.dispatch(fetchPublishers("publisherName"));
-  }
-
   render() {
     return (
       <div className="container">
         <div style={headerStyle}><div style={imgbookHeaderStyle}></div>Bo's Bookshop</div>
+        <Router>
+          <Switch>
+            <Route path={`/shop/books`} component={Books} />
+            <Route path={`/shop/book/:id`} component={BookDetail} />
+            <Route path={`/shop`} component={ShopHome} />
+          </Switch>
+        </Router>
       </div>
     )
   }
 
 }
 
-const mapStateToProps = state => {
-  return {
-    publishers: state.publishers.items,
-    books: state.books.items
-  };
-};
-
-export default connect(mapStateToProps)(Shop);
+export default Shop;
