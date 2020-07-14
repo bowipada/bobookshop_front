@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { fetchPublishers } from "../../redux/actions/publisherAction";
 import { fetchCategoriesBooks } from "../../redux/actions/bookAction";
 import { fetchDiscounts } from "../../redux/actions/discountAction";
+import { withRouter } from "react-router-dom";
 
 import BookGroup from "./bookGroup";
 
@@ -79,4 +80,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(ShopHome);
+export default connect(mapStateToProps)(withRouter(ShopHome));

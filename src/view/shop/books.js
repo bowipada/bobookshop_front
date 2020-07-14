@@ -1,8 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import { connect } from "react-redux";
+import { getBooksShop } from "../../redux/selectors";
 // import { fetchPublishers } from "../redux/actions/publisherAction";
-import { fetchCategoriesBooks } from "../../redux/actions/bookAction";
+import { fetchCategoriesBooks, fetchBooks } from "../../redux/actions/bookAction";
 import { fetchDiscounts } from "../../redux/actions/discountAction";
 import BookGroup from "./bookGroup";
 import { withRouter } from "react-router-dom";
@@ -20,13 +21,18 @@ const Title = styled.div`
   color: #009688;
 `
 
+const contentStyle = {
+  height: "100%"
+}
+
 class Books extends React.Component {
   constructor() {
     super();
     this.discounts = {};
     this.state = {
       title: "",
-      books: []
+      books: [],
+      keyword: ""
     }
   }
 
@@ -40,21 +46,41 @@ class Books extends React.Component {
     const search = this.props.location.search;
     const params = new URLSearchParams(search);
     const cate = params.get('cate');
+    let keyword = params.get('keyword');
     if (cate) {
       this.props.dispatch(fetchCategoriesBooks({ categoryid: cate })).then(() => {
         if (this.props.categories.length > 0) {
-          
           this.setState({ title : this.props.categories[0].categoryName});
           this.setState({ books : this.props.categories[0].book_categories});
         }
       });
+    } else if (keyword) {
+      this.onSearch(keyword);
     }
+  }
 
+  componentDidUpdate() {
+    const search = "?" + window.location.href.split("?")[1];
+    const params = new URLSearchParams(search);
+    let keyword = params.get('keyword');
+    if (keyword && keyword !== this.state.keyword) {
+      this.onSearch(keyword);
+    }
+  }
+
+  onSearch(txt) {
+    const keyword = decodeURI(txt);
+    this.setState({ keyword }); 
+    console.log("onSearch", keyword)
+    this.props.dispatch(fetchBooks(keyword)).then(() => {
+      this.setState({ title : `result for "${keyword}"` });
+      this.setState({ books: this.props.books });
+    });
   }
 
   render() {
     return (
-      <div className="content">
+      <div className="content" style={contentStyle}>
         <Title>{this.state.title}</Title>
         <div>
           {
@@ -70,7 +96,7 @@ class Books extends React.Component {
 const mapStateToProps = state => {
   return {
     publishers: state.publishers.items,
-    books: state.books.items,
+    books: getBooksShop(state),
     categories: state.books.categories,
     discounts: state.discounts.items
   };

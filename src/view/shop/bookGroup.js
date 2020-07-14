@@ -13,7 +13,10 @@ class BookGroup extends React.Component {
       <Wrap>
         {
           this.props.books.map(item => {
-            const discount = this.props.discounts["pub-" + item.book.publisherId];
+            let discount = item.book.discountPercent;
+            if (!discount) {
+              discount = this.props.discounts["pub-" + item.book.publisherId];
+            }
             return (
               <BookItem book={item.book} key={item.bookId} discount={discount} />
             )

@@ -6,3 +6,18 @@ export const getAvatar = store => {
     }
     return "";
 }
+
+
+export const getBooksShop =  store => {
+    if (store.books.items) {
+        const books = store.books.items.map(book => {
+            let discountPercent = 0;
+            if (book.publisher && book.publisher.discount) {
+              discountPercent = book.publisher.discount.discountPercent;
+            }
+            return { book: {...book, discountPercent}, bookId: book.id };
+          });
+        return books;
+    }
+    return []
+}
