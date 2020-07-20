@@ -94,13 +94,6 @@ class Shop extends React.Component {
                 <SearchIcon />
               </IconButton>
             </Box>
-            {/* <Input
-              value={this.state.keyword}
-              onChange={this.onKeywordChange}
-              onKeyDown={this.onKeyDown}
-              fullWidth={true}
-              placeholder="Search"
-            /> */}
           </div>
           <Switch>
             <Route path={`/shop/books`} component={Books} />

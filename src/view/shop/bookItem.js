@@ -1,7 +1,7 @@
 import React from "react";
 import styled from 'styled-components';
 import imgBook from '../../assets/images/book.png';
-
+import { withRouter } from "react-router-dom";
 
 const BookWrap = styled.div`
   width: 23.5%;
@@ -115,7 +115,7 @@ function BookItem(props) {
     priceDiscount = Math.round(props.book.price * (100 - props.discount) / 100);
   }
   return (
-    <BookWrap>
+    <BookWrap onClick={() => { props.history.push('/shop/book/' + props.book.id ); }}>
       {isDisCount && <Tag>-{props.discount}%</Tag>}
       <ImgWrap>
         <img src={imgBook} style={imgStyle} alt={props.book.bookName} />
@@ -130,4 +130,4 @@ function BookItem(props) {
   );
 }
 
-export default BookItem;
+export default withRouter(BookItem);
