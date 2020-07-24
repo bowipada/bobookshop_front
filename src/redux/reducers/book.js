@@ -3,12 +3,14 @@ import {
     ADD_BOOK,
     UPDATE_BOOK,
     DELETE_BOOK,
-    SET_CATEGORIES_BOOKS
+    SET_CATEGORIES_BOOKS,
+    SET_CART
   } from "../actionTypes";
   
   const initialState = {
     items: [],
-    categories: []
+    categories: [],
+    cart: 0
   };
   
   export default function (state = initialState, action) {
@@ -33,6 +35,9 @@ import {
       }
       case SET_CATEGORIES_BOOKS: {
         return { ...state, categories: action.categories };
+      }
+      case SET_CART: {
+        return { ...state, cart: action.cart };
       }
       default: {
         return state;

@@ -8,9 +8,12 @@
 }
 
 .content {
-  width: 1200px;
+  width: 1100px;
   max-width: 98%;
   margin: auto;
+}
+.content + .content {
+  padding-bottom: 50px;
 }
 
 .main-container {
@@ -65,4 +68,8 @@
     display: block;
     color: #333;
   }
+}
+
+.h100 {
+  height: 100%;
 }

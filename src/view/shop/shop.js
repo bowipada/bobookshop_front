@@ -1,6 +1,7 @@
 import React from 'react';
-import { Input, Box, IconButton } from "@material-ui/core";
+import { Input, Box, IconButton, Badge } from "@material-ui/core";
 import SearchIcon from '@material-ui/icons/Search';
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import {
   BrowserRouter as Router,
   Switch,
@@ -12,7 +13,9 @@ import {
 import ShopHome from "./shopHome";
 import Books from "./books";
 import BookDetail from "./bookDetail";
-
+import Cart from "./cart";
+import { connect } from "react-redux";
+import { setCart } from "../../redux/actions/bookAction";
 import imgbookHeader from '../../assets/images/bookstack.png';
 
 const headerStyle = {
@@ -41,14 +44,25 @@ const imgbookHeaderStyle = {
 
 const linkStyle = {
   color: "#fff",
-  textDecoration: "none"
+  textDecoration: "none",
+  display: "inline-block",
+  lineHeight: "50px"
 };
 
+const iconCartStyle = {
+  float: "right",
+  cursor: "pointer",
+  display: "inline-flex",
+  alignItems: "center",
+  height: "100%",
+  color: "#fff"
+}
 class Shop extends React.Component {
   constructor() {
     super();
     this.state = {
-      keyword: ""
+      keyword: "",
+      cartCount: 0
     };
     this.onKeywordChange = this.onKeywordChange.bind(this);
     this.onKeyDown = this.onKeyDown.bind(this);
@@ -72,12 +86,31 @@ class Shop extends React.Component {
     window.location.reload();
   }
 
+  setCartCount() {
+    let cartCount = 0;
+    if (sessionStorage.getItem("cart")) {
+      const cart = JSON.parse(sessionStorage.getItem("cart"));
+      cartCount = cart.length;
+    }
+    this.props.dispatch(setCart(cartCount));
+  }
+
+  componentDidMount() {
+    this.setCartCount();
+  }
+
   render() {
+    const cart = this.props.cart ? this.props.cart : 0;
     return (
       <div className="container">
         <Router>
           <div style={headerStyle}><div style={imgbookHeaderStyle}></div>
             <Link to="/shop" style={linkStyle}>Bo's Bookshop</Link>
+            <Link to="/shop/cart" style={iconCartStyle}>
+              <Badge badgeContent={cart} color="secondary" max={99}>
+                <ShoppingCartIcon></ShoppingCartIcon>
+              </Badge>
+            </Link>
           </div>
           <div className="content">
             <Box m={1} display="flex">
@@ -96,9 +129,11 @@ class Shop extends React.Component {
             </Box>
           </div>
           <Switch>
-            <Route path={`/shop/books`} component={Books} />
+            {/* <Route path="/shop/book/:id" render={() => <BookDetail setCartCount={this.setCartCount} />} /> */}
             <Route path={`/shop/book/:id`} component={BookDetail} />
-            <Route path={`/shop`} component={ShopHome} />
+            <Route path="/shop/books" component={Books} />
+            <Route path="/shop/cart" component={Cart} />
+            <Route path="/shop" component={ShopHome} />
           </Switch>
         </Router>
       </div>
@@ -106,4 +141,11 @@ class Shop extends React.Component {
   }
 
 }
-export default (withRouter(Shop));
+
+const mapStateToProps = state => {
+  return {
+    cart: state.books.cart
+  };
+};
+
+export default connect(mapStateToProps)(withRouter(Shop));

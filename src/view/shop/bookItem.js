@@ -32,7 +32,8 @@ const BookWrap = styled.div`
 `
 
 const ImgWrap = styled.div`
-  width: 120px;
+  width: 110px;
+  flex-shrink: 0;
   @media (max-width: 425px) {
     width: 100%;
     height: 150px;
@@ -52,10 +53,6 @@ const TextWrap = styled.div`
 `
 const Price = styled.div`
   color: red;
-  @media (min-width: 426px) {
-    position: absolute;
-    bottom: 0;
-  }
   @media (max-width: 425px) {
     float: right;
     margin-top: -46px;
@@ -105,8 +102,6 @@ const Tag = styled.div`
     border-color: transparent transparent transparent red;
   }
 `
-
-
 function BookItem(props) {
   let priceDiscount = 0;
   let isDisCount = false;

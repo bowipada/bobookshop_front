@@ -3,7 +3,8 @@ import {
     ADD_BOOK,
     UPDATE_BOOK,
     DELETE_BOOK,
-    SET_CATEGORIES_BOOKS
+    SET_CATEGORIES_BOOKS,
+    SET_CART
   } from "../actionTypes";
   import Api from "../../api";
   
@@ -97,4 +98,9 @@ import {
   export const setCategoriesBooks = (categories) => ({
     type: SET_CATEGORIES_BOOKS,
     categories
+  })
+
+  export const setCart = (cart) => ({
+    type: SET_CART,
+    cart
   })
