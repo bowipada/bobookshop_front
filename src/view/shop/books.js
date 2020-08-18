@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { connect } from "react-redux";
 import { getBooksShop } from "../../redux/selectors";
 // import { fetchPublishers } from "../redux/actions/publisherAction";
-import { fetchCategoriesBooks, fetchBooks } from "../../redux/actions/bookAction";
+import { fetchCategoriesBooks, fetchBooks, fetchTagsBooks } from "../../redux/actions/bookAction";
 import { fetchDiscounts } from "../../redux/actions/discountAction";
 import BookGroup from "./bookGroup";
 import { withRouter } from "react-router-dom";
@@ -45,13 +45,29 @@ class Books extends React.Component {
 
     const search = this.props.location.search;
     const params = new URLSearchParams(search);
-    const cate = params.get('cate');
+    const categoryid = params.get('cate');
+    const tagid = params.get('tag');
     let keyword = params.get('keyword');
-    if (cate) {
-      this.props.dispatch(fetchCategoriesBooks({ categoryid: cate })).then(() => {
-        if (this.props.categories.length > 0) {
-          this.setState({ title : this.props.categories[0].categoryName});
-          this.setState({ books : this.props.categories[0].book_categories});
+    if (categoryid || tagid) {
+
+      let fetchFunc = null;
+      let fetchParam = null;
+      if (categoryid) {
+        fetchParam = { categoryid };
+        fetchFunc = fetchCategoriesBooks;
+      } else {
+        fetchParam = { tagid };
+        fetchFunc = fetchTagsBooks;
+      }
+      this.props.dispatch(fetchFunc(fetchParam)).then(() => {
+        if (this.props.groups.length > 0) {
+          if (categoryid) {
+            this.setState({ title: this.props.groups[0].categoryName });
+            this.setState({ books: this.props.groups[0].book_categories });
+          } else {
+            this.setState({ title: this.props.groups[0].tagName });
+            this.setState({ books: this.props.groups[0].book_tags });
+          }
         }
       });
     } else if (keyword) {
@@ -70,10 +86,10 @@ class Books extends React.Component {
 
   onSearch(txt) {
     const keyword = decodeURI(txt);
-    this.setState({ keyword }); 
+    this.setState({ keyword });
     console.log("onSearch", keyword)
     this.props.dispatch(fetchBooks(keyword)).then(() => {
-      this.setState({ title : `result for "${keyword}"` });
+      this.setState({ title: `result for "${keyword}"` });
       this.setState({ books: this.props.books });
     });
   }
@@ -97,7 +113,7 @@ const mapStateToProps = state => {
   return {
     publishers: state.publishers.items,
     books: getBooksShop(state),
-    categories: state.books.categories,
+    groups: state.books.groups,
     discounts: state.discounts.items
   };
 };

@@ -34,12 +34,14 @@ import SearchIcon from '@material-ui/icons/Search';
 import { connect } from "react-redux";
 import { fetchPublishers } from "../redux/actions/publisherAction";
 import { fetchCategory } from "../redux/actions/categoryAction";
+import { fetchTags } from  "../redux/actions/tagAction";
 import {
   fetchBooks,
   createBook,
   updateBook,
   deleteBook,
-  saveBookCategories
+  saveBookCategories,
+  saveBookTags
 } from "../redux/actions/bookAction";
 
 const contianerStyle = { marginTop: "5px" };
@@ -62,7 +64,7 @@ class Book extends React.Component {
       showDialog: false,
       isEdit: false,
       editIndex: -1,
-      item: { categories: [] },
+      item: { categories: [], tags: []},
       anchorEl: null,
       anchorIndex: -1,
       keyword: "",
@@ -111,6 +113,27 @@ class Book extends React.Component {
       return "";
     };
 
+    const handleChangeTag = (event) => {
+      const tags = event.target.value;
+      this.setState({
+        item: { ...this.state.item, tags }
+      });
+    };
+
+    const selectedTags = (selectedIds) => {
+      if (selectedIds.length > 0) {
+        const arr = selectedIds.map(id => {
+          const cate = this.props.tags.find(c => c.id === id);
+          if (cate) {
+            return cate.tagName;
+          }
+          return "";
+        });
+        return arr.join(", ");
+      }
+      return "";
+    };
+
     const listPubs = this.props.publishers.map(e => {
       return <MenuItem value={e.id} key={e.id}>{e.publisherName}</MenuItem>
     });
@@ -151,6 +174,7 @@ class Book extends React.Component {
                   <TableCell>Publisher</TableCell>
                   <TableCell>Discount</TableCell>
                   <TableCell>Categories</TableCell>
+                  <TableCell>Tags</TableCell>
                   <TableCell></TableCell>
                 </TableRow>
               </TableHead>
@@ -215,7 +239,7 @@ class Book extends React.Component {
                 fullWidth={true}
                 value={this.state.item.detail}
                 inputProps={{
-                  maxLength: 1000,
+                  maxLength: 1200,
                 }}
                 onChange={(event) => this.onInputChange(event, 'detail')} />
             </div>
@@ -236,6 +260,28 @@ class Book extends React.Component {
                     <MenuItem key={cate.id} value={cate.id}>
                       <Checkbox color="primary" checked={this.state.item.categories.indexOf(cate.id) > -1} />
                       <ListItemText primary={cate.categoryName} />
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </div>
+            <div>
+              <FormControl fullWidth={true}>
+                <InputLabel id="mutiple-checkbox-label">Tags</InputLabel>
+                <Select
+                  labelId="mutiple-checkbox-label"
+                  id="mutiple-checkbox"
+                  multiple
+                  value={this.state.item.tags}
+                  onChange={handleChangeTag}
+                  input={<Input />}
+                  renderValue={(selected) => selectedTags(selected)}
+                  MenuProps={MenuProps}
+                >
+                  {this.props.tags.map((tag) => (
+                    <MenuItem key={tag.id} value={tag.id}>
+                      <Checkbox color="primary" checked={this.state.item.tags.indexOf(tag.id) > -1} />
+                      <ListItemText primary={tag.tagName} />
                     </MenuItem>
                   ))}
                 </Select>
@@ -276,6 +322,9 @@ class Book extends React.Component {
         <TableCell align="right">{row.publisher && row.publisher.discount && row.publisher.discount.discountPercent ? row.publisher.discount.discountPercent + '%' : '-'}</TableCell>
         <TableCell>
           {row.bookCategories && row.bookCategories.map(e => e.categoryName).join(", ")}
+        </TableCell>
+        <TableCell>
+          {row.tags && row.tags.map(e => e.tagName).join(", ")}
         </TableCell>
         <TableCell>
           <IconButton aria-describedby={open ? 'detail-' + index : undefined} onClick={(event) => handleOpen(event, index)} >
@@ -322,11 +371,15 @@ class Book extends React.Component {
 
   onEdit(item, index) {
     let categories = [];
+    let tags = [];
     if (item.bookCategories) {
       categories = item.bookCategories.map(e => e.categoryId);
     }
+    if (item.tags) {
+      tags = item.tags.map(e => e.tagId);
+    }
     this.setState({
-      item: { ...item, categories },
+      item: { ...item, categories, tags },
       editIndex: index,
       isEdit: true,
       showDialog: true
@@ -352,6 +405,7 @@ class Book extends React.Component {
     if (this.state.isEdit) {
       this.props.dispatch(updateBook(this.state.item, this.state.editIndex)).then(() => {
         this.props.dispatch(saveBookCategories(this.state.item.categories, this.state.item.id));
+        this.props.dispatch(saveBookTags(this.state.item.tags, this.state.item.id));
         this.setState({ isEdit: false });
         this.onCloseDialog();
       });
@@ -359,6 +413,7 @@ class Book extends React.Component {
       this.props.dispatch(createBook(this.state.item)).then((res) => {
         if (res.id) {
           this.props.dispatch(saveBookCategories(this.state.item.categories, res.id));
+          this.props.dispatch(saveBookTags(this.state.item.tags, this.state.item.id));
         }
         this.onCloseDialog();
       });
@@ -378,6 +433,7 @@ class Book extends React.Component {
     this.props.dispatch(fetchBooks());
     this.props.dispatch(fetchPublishers("publisherName"));
     this.props.dispatch(fetchCategory("categoryName"));
+    this.props.dispatch(fetchTags());
   }
 
 }
@@ -386,7 +442,8 @@ const mapStateToProps = state => {
   return {
     publishers: state.publishers.items,
     books: state.books.items,
-    categories: state.categories.items
+    categories: state.categories.items,
+    tags: state.tags.items
   };
 };
 

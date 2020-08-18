@@ -3,7 +3,7 @@ import {
     ADD_BOOK,
     UPDATE_BOOK,
     DELETE_BOOK,
-    SET_CATEGORIES_BOOKS,
+    SET_GROUPS_BOOKS,
     SET_CART
   } from "../actionTypes";
   import Api from "../../api";
@@ -25,6 +25,16 @@ import {
   export const saveBookCategories = (categories, bookId) => {
     return dispatch => {
       return api.saveBookCategories({bookId, categories}).then((res) => {
+        if (res.status === 200) {
+          dispatch(fetchBooks());
+        }
+      });
+    }
+  };
+
+  export const saveBookTags = (tags, bookId) => {
+    return dispatch => {
+      return api.saveBookTags({bookId, tags}).then((res) => {
         if (res.status === 200) {
           dispatch(fetchBooks());
         }
@@ -67,9 +77,21 @@ import {
     return dispatch => {
       return api.getCategoriesBooks(param).then((res) => {
         if (res.data) {
-          dispatch(setCategoriesBooks(res.data));
+          dispatch(setGroupsBook(res.data));
         } else {
-          dispatch(setCategoriesBooks([]));
+          dispatch(setGroupsBook([]));
+        }
+      });
+    }
+  };
+
+  export const fetchTagsBooks = (param = null) => {
+    return dispatch => {
+      return api.getTagsBooks(param).then((res) => {
+        if (res.data) {
+          dispatch(setGroupsBook(res.data));
+        } else {
+          dispatch(setGroupsBook([]));
         }
       });
     }
@@ -95,12 +117,12 @@ import {
     index
   });
 
-  export const setCategoriesBooks = (categories) => ({
-    type: SET_CATEGORIES_BOOKS,
-    categories
-  })
+  export const setGroupsBook = (groups) => ({
+    type: SET_GROUPS_BOOKS,
+    groups
+  });
 
   export const setCart = (cart) => ({
     type: SET_CART,
     cart
-  })
+  });

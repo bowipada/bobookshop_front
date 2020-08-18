@@ -111,7 +111,7 @@ function BookItem(props) {
   }
   return (
     <BookWrap onClick={() => { props.history.push('/shop/book/' + props.book.id ); }}>
-      {isDisCount && <Tag>-{props.discount}%</Tag>}
+      {isDisCount && <Tag>{props.discount}% off</Tag>}
       <ImgWrap>
         <img src={imgBook} style={imgStyle} alt={props.book.bookName} />
       </ImgWrap>

@@ -104,6 +104,9 @@ class Header extends React.Component {
               <LinkItem to="/category" label="Category" />
             </ListItem>
             <ListItem className="nav-item">
+              <LinkItem to="/tag" label="Tag" />
+            </ListItem>
+            <ListItem className="nav-item">
               <LinkItem to="/shop" label="Shop" />
             </ListItem>
             <ListItem className="nav-item" onClick={this.logout}>

@@ -5,6 +5,7 @@ import Discount from "./view/discount";
 import Book from "./view/book";
 import Shop from "./view/shop/shop"
 import Category from "./view/category";
+import Tag from "./view/tag";
 
 export const routes = [
   {
@@ -35,5 +36,9 @@ export const routes = [
   {
     path: "/shop",
     component: Shop,
+  },
+  {
+    path: "/tag",
+    component: Tag,
   }
 ];

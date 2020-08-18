@@ -9,10 +9,14 @@ const Wrap = styled.div`
 
 class BookGroup extends React.Component {
   render() {
+    var books = [];
+    if (this.props.books) {
+      books = this.props.books
+    }
     return (
       <Wrap>
         {
-          this.props.books.map(item => {
+          books.map(item => {
             let discount = item.book.discountPercent;
             if (!discount) {
               discount = this.props.discounts["pub-" + item.book.publisherId];

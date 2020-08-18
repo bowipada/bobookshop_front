@@ -3,13 +3,13 @@ import {
     ADD_BOOK,
     UPDATE_BOOK,
     DELETE_BOOK,
-    SET_CATEGORIES_BOOKS,
+    SET_GROUPS_BOOKS,
     SET_CART
   } from "../actionTypes";
   
   const initialState = {
     items: [],
-    categories: [],
+    groups: [],
     cart: 0
   };
   
@@ -33,8 +33,8 @@ import {
         items.splice(action.index, 1);
         return { ...state, items };
       }
-      case SET_CATEGORIES_BOOKS: {
-        return { ...state, categories: action.categories };
+      case SET_GROUPS_BOOKS: {
+        return { ...state, groups: action.groups };
       }
       case SET_CART: {
         return { ...state, cart: action.cart };

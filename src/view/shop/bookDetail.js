@@ -119,7 +119,7 @@ class BookDetail extends React.Component {
             {isDiscount && <OriginalPrice>{book.price}฿</OriginalPrice>}
             <div>
               <Price>{salePrice}฿</Price>
-              {isDiscount && <Tag>Sale {discount}%</Tag>}
+              {isDiscount && <Tag>{discount}% off</Tag>}
             </div>
             <Button
               startIcon={<ShoppingCartIcon />}

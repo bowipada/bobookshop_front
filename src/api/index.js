@@ -151,6 +151,45 @@ class API {
     
     return this.get(`book-categories${q}`);
   }
+
+  // tag
+  createTag(data) {
+    return this.post("tags", data);
+  }
+
+  updateTag(data) {
+    return this.put("tags", data);
+  }
+
+  deleteTag(id) {
+    return this.delete("tags/" + id);
+  }
+
+  getTag() {
+    return this.get("tags");
+  }
+
+  saveBookTags(param) {
+    return this.post("book-tags", param);
+  }
+
+  getTagsBooks(param = null) {
+    let q = "";
+    let arrQ = [];
+    if (param) {
+      if (param.limit) {
+        arrQ.push(`limit=${param.limit}`);
+      }
+      if (param.tagid) {
+        arrQ.push(`tagid=${param.tagid}`);
+      }
+      if(arrQ.length > 0) {
+        q = "?" + arrQ.join("&");
+      }
+    }
+    
+    return this.get(`book-tags${q}`);
+  }
 }
 
 export default API;

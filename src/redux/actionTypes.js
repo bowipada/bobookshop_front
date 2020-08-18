@@ -35,5 +35,14 @@ export const CHANGE_NAME_CATEGORY = "CHANGE_NAME_CATEGORY";
 export const UPDATE_CATEGORY = "UPDATE_CATEGORY";
 export const DELETE_CATEGORY = "DELETE_CATEGORY";
 
+export const SET_TAGS = "SET_TAGS";
+export const ADD_TAG = "ADD_TAG";
+export const EDITING_TAG = "EDITING_TAG";
+export const CANCEL_ADD_TAG = "CANCEL_ADD_TAG";
+export const CANCEL_EDIT_TAG = "CANCEL_EDIT_TAG";
+export const UPDATE_TAG = "UPDATE_TAG";
+export const DELETE_TAG = "DELETE_TAG";
+export const CHANGE_TAG_NAME = "CHANGE_TAG_NAME";
+
 // for shop
-export const SET_CATEGORIES_BOOKS = "SET_CATEGORIES_BOOKS";
+export const SET_GROUPS_BOOKS = "SET_GROUPS_BOOKS";
