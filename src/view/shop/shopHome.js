@@ -90,10 +90,10 @@ class ShopHome extends React.Component {
       this.props.discounts.forEach(item => {
         this.discounts["pub-" + item.publisherId] = item.discountPercent;
       });
+      this.props.dispatch(fetchPublishers("publisherName"));
+      this.props.dispatch(fetchTagsBooks({ limit: 8 }));
+      this.props.dispatch(fetchCategory("categoryName"));
     });
-    this.props.dispatch(fetchPublishers("publisherName"));
-    this.props.dispatch(fetchTagsBooks({ limit: 8 }));
-    this.props.dispatch(fetchCategory("categoryName"));
   }
 
   viewAll(id) {

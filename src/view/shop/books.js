@@ -40,39 +40,39 @@ class Books extends React.Component {
     this.props.dispatch(fetchDiscounts()).then(() => {
       this.props.discounts.forEach(item => {
         this.discounts["pub-" + item.publisherId] = item.discountPercent;
-      });
-    });
 
-    const search = this.props.location.search;
-    const params = new URLSearchParams(search);
-    const categoryid = params.get('cate');
-    const tagid = params.get('tag');
-    let keyword = params.get('keyword');
-    if (categoryid || tagid) {
+        const search = this.props.location.search;
+        const params = new URLSearchParams(search);
+        const categoryid = params.get('cate');
+        const tagid = params.get('tag');
+        let keyword = params.get('keyword');
+        if (categoryid || tagid) {
 
-      let fetchFunc = null;
-      let fetchParam = null;
-      if (categoryid) {
-        fetchParam = { categoryid };
-        fetchFunc = fetchCategoriesBooks;
-      } else {
-        fetchParam = { tagid };
-        fetchFunc = fetchTagsBooks;
-      }
-      this.props.dispatch(fetchFunc(fetchParam)).then(() => {
-        if (this.props.groups.length > 0) {
+          let fetchFunc = null;
+          let fetchParam = null;
           if (categoryid) {
-            this.setState({ title: this.props.groups[0].categoryName });
-            this.setState({ books: this.props.groups[0].book_categories });
+            fetchParam = { categoryid };
+            fetchFunc = fetchCategoriesBooks;
           } else {
-            this.setState({ title: this.props.groups[0].tagName });
-            this.setState({ books: this.props.groups[0].book_tags });
+            fetchParam = { tagid };
+            fetchFunc = fetchTagsBooks;
           }
+          this.props.dispatch(fetchFunc(fetchParam)).then(() => {
+            if (this.props.groups.length > 0) {
+              if (categoryid) {
+                this.setState({ title: this.props.groups[0].categoryName });
+                this.setState({ books: this.props.groups[0].book_categories });
+              } else {
+                this.setState({ title: this.props.groups[0].tagName });
+                this.setState({ books: this.props.groups[0].book_tags });
+              }
+            }
+          });
+        } else if (keyword) {
+          this.onSearch(keyword);
         }
       });
-    } else if (keyword) {
-      this.onSearch(keyword);
-    }
+    });
   }
 
   componentDidUpdate() {
